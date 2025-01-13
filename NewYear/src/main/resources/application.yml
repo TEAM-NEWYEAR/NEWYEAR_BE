@@ -1,0 +1,92 @@
+# Application Configuration
+spring:
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+    date-format: yyyy-MM-dd'T'HH:mm:ss
+    serialization:
+      write-dates-as-timestamps: false
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+
+  # DataSource Configuration
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+  # JPA Configuration
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: update
+
+  # JWT Configuration
+  jwt:
+    header: Authorization
+    secret-key: ${JWT_SECRET_KEY}
+    access-exp: 2592000000  # 30일
+    refresh-exp: 2592000000 # 30일
+    prefix: Bearer
+
+  # Redis Configuration
+  redis:
+    host: localhost
+    port: 6379
+
+  # AWS Configuration
+  cloud:
+    aws:
+      credentials:
+        access-key: ${AWS_ACCESS_KEY}
+        secret-key: ${AWS_SECRET_KEY}
+      region:
+        static: ap-northeast-2
+      s3:
+        endpoint: https://kr.object.ncloudstorage.com
+        bucket: meet
+
+# Logging Configuration
+logging:
+  level:
+    root: INFO
+    org.springframework: ERROR
+  file:
+    name: logs/error.log
+    max-size: 10MB
+    total-size-cap: 100MB
+    max-history: 5
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+# Management Endpoints Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+  health:
+    enabled: true
+  endpoint:
+    health:
+      show-details: always
+
+# SpringDoc (Swagger) Configuration
+springdoc:
+  swagger-ui:
+    operations-sorter: method
+    tags-sorter: alpha
+    doc-expansion: none
+    display-request-duration: true
+    deep-linking: true
+
+
+
